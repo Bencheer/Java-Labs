@@ -15,18 +15,6 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        /*BufferedImage img = ImageIO.read(new File("C:\\Users\\CM\\Desktop\\0_80925_3732e180_orig.jpg"));
-
-        System.out.println(img.getWidth());
-        System.out.println(img.getHeight());
-
-        BufferedImage thumbnail =
-                Scalr.resize(img, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH,
-                        150, 100, Scalr.OP_ANTIALIAS);
-        System.out.println(thumbnail);
-        File newFile = new File("E:\\save.jpg");
-        ImageIO.write(thumbnail, "jpg", newFile);*/
-        ResizeImage img1 = new ResizeImage(args[0], args[1], 450, 400);
-
+        ResizeImage img1 = new ResizeImage(args[0], args[1], Integer.parseInt(args[2]), Integer.parseInt(args[3]));
     }
 }

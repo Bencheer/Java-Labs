@@ -1,0 +1,154 @@
+[33mcommit 9d911ea064d4671b17e453945d2f5ea8333ea0f3[m
+Author: Bencheer <DmitriyTemn@gmail.com>
+Date:   Sat Oct 25 09:50:17 2014 +0600
+
+    Update Maven
+
+[1mdiff --git a/maven/maven.iml b/maven/maven.iml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..0438ff9[m
+[1m--- /dev/null[m
+[1m+++ b/maven/maven.iml[m
+[36m@@ -0,0 +1,17 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="UTF-8"?>[m
+[32m+[m[32m<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">[m
+[32m+[m[32m  <component name="NewModuleRootManager" inherit-compiler-output="false">[m
+[32m+[m[32m    <output url="file://$MODULE_DIR$/target/classes" />[m
+[32m+[m[32m    <output-test url="file://$MODULE_DIR$/target/test-classes" />[m
+[32m+[m[32m    <content url="file://$MODULE_DIR$">[m
+[32m+[m[32m      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />[m
+[32m+[m[32m      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />[m
+[32m+[m[32m      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />[m
+[32m+[m[32m      <excludeFolder url="file://$MODULE_DIR$/target" />[m
+[32m+[m[32m    </content>[m
+[32m+[m[32m    <orderEntry type="inheritedJdk" />[m
+[32m+[m[32m    <orderEntry type="sourceFolder" forTests="false" />[m
+[32m+[m[32m    <orderEntry type="library" name="Maven: org.imgscalr:imgscalr-lib:4.2" level="project" />[m
+[32m+[m[32m  </component>[m
+[32m+[m[32m</module>[m
+[32m+[m
+[1mdiff --git a/maven/pom.xml b/maven/pom.xml[m
+[1mnew file mode 100644[m
+[1mindex 0000000..3e1daca[m
+[1m--- /dev/null[m
+[1m+++ b/maven/pom.xml[m
+[36m@@ -0,0 +1,19 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="UTF-8"?>[m
+[32m+[m[32m<project xmlns="http://maven.apache.org/POM/4.0.0"[m
+[32m+[m[32m         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"[m
+[32m+[m[32m         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">[m
+[32m+[m[32m    <modelVersion>4.0.0</modelVersion>[m
+[32m+[m
+[32m+[m[32m    <groupId>1</groupId>[m
+[32m+[m[32m    <artifactId>1</artifactId>[m
+[32m+[m[32m    <version>1.0-SNAPSHOT</version>[m
+[32m+[m
+[32m+[m[32m    <dependencies>[m
+[32m+[m[32m        <dependency>[m
+[32m+[m[32m            <groupId>org.imgscalr</groupId>[m
+[32m+[m[32m            <artifactId>imgscalr-lib</artifactId>[m
+[32m+[m[32m            <version>4.2</version>[m
+[32m+[m[32m        </dependency>[m
+[32m+[m[32m    </dependencies>[m
+[32m+[m
+[32m+[m[32m</project>[m
+\ No newline at end of file[m
+[1mdiff --git a/maven/src/main/java/mainpack/Main.java b/maven/src/main/java/mainpack/Main.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..5dff54a[m
+[1m--- /dev/null[m
+[1m+++ b/maven/src/main/java/mainpack/Main.java[m
+[36m@@ -0,0 +1,32 @@[m
+[32m+[m[32mpackage mainpack;[m
+[32m+[m
+[32m+[m[32mimport org.imgscalr.Scalr;[m
+[32m+[m[32mimport resizeimage.ResizeImage;[m
+[32m+[m
+[32m+[m[32mimport javax.imageio.ImageIO;[m
+[32m+[m[32mimport java.awt.*;[m
+[32m+[m[32mimport java.awt.image.BufferedImage;[m
+[32m+[m[32mimport java.io.File;[m
+[32m+[m[32mimport java.io.IOException;[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m * Created by CM on 25.10.2014.[m
+[32m+[m[32m */[m
+[32m+[m[32mpublic class Main {[m
+[32m+[m
+[32m+[m[32m    public static void main(String[] args) throws IOException {[m
+[32m+[m[32m        /*BufferedImage img = ImageIO.read(new File("C:\\Users\\CM\\Desktop\\0_80925_3732e180_orig.jpg"));[m
+[32m+[m
+[32m+[m[32m        System.out.println(img.getWidth());[m
+[32m+[m[32m        System.out.println(img.getHeight());[m
+[32m+[m
+[32m+[m[32m        BufferedImage thumbnail =[m
+[32m+[m[32m                Scalr.resize(img, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH,[m
+[32m+[m[32m                        150, 100, Scalr.OP_ANTIALIAS);[m
+[32m+[m[32m        System.out.println(thumbnail);[m
+[32m+[m[32m        File newFile = new File("E:\\save.jpg");[m
+[32m+[m[32m        ImageIO.write(thumbnail, "jpg", newFile);*/[m
+[32m+[m[32m        ResizeImage img1 = new ResizeImage(args[0], args[1], 450, 400);[m
+[32m+[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/maven/src/main/java/resizeimage/ResizeImage.java b/maven/src/main/java/resizeimage/ResizeImage.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..fcba429[m
+[1m--- /dev/null[m
+[1m+++ b/maven/src/main/java/resizeimage/ResizeImage.java[m
+[36m@@ -0,0 +1,30 @@[m
+[32m+[m[32mpackage resizeimage;[m
+[32m+[m
+[32m+[m[32mimport org.imgscalr.Scalr;[m
+[32m+[m
+[32m+[m[32mimport javax.imageio.ImageIO;[m
+[32m+[m[32mimport java.awt.image.BufferedImage;[m
+[32m+[m[32mimport java.io.File;[m
+[32m+[m[32mimport java.io.IOException;[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m * Created by CM on 25.10.2014.[m
+[32m+[m[32m */[m
+[32m+[m[32mpublic class ResizeImage {[m
+[32m+[m[32m    public ResizeImage (String inputFilePath, String outputFilePath, Integer width, Integer height) throws IOException {[m
+[32m+[m[32m        BufferedImage img = ImageIO.read(new File(inputFilePath));[m
+[32m+[m[32m        BufferedImage image = resizeImg(img, width, height);[m
+[32m+[m
+[32m+[m[32m        File newFile = new File(outputFilePath);[m
+[32m+[m[32m        ImageIO.write(image, "jpg", newFile);[m
+[32m+[m[32m        System.out.println("Вы можете открыть файл в: " + outputFilePath);[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    private BufferedImage resizeImg (BufferedImage img, Integer height, Integer width) {[m
+[32m+[m[32m        BufferedImage thumbnail =[m
+[32m+[m[32m                Scalr.resize(img, Scalr.Method.SPEED, Scalr.Mode.FIT_TO_WIDTH,[m
+[32m+[m[32m                        width, height, Scalr.OP_ANTIALIAS);[m
+[32m+[m
+[32m+[m[32m        return  thumbnail;[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
+[1mdiff --git a/maven/target/maven-archiver/pom.properties b/maven/target/maven-archiver/pom.properties[m
+[1mnew file mode 100644[m
+[1mindex 0000000..f2b287c[m
+[1m--- /dev/null[m
+[1m+++ b/maven/target/maven-archiver/pom.properties[m
+[36m@@ -0,0 +1,5 @@[m
+[32m+[m[32m#Generated by Maven[m
+[32m+[m[32m#Sat Oct 25 09:37:32 YEKT 2014[m
+[32m+[m[32mversion=1.0-SNAPSHOT[m
+[32m+[m[32mgroupId=1[m
+[32m+[m[32martifactId=1[m
+[1mdiff --git a/maven/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst b/maven/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e69de29[m
+[1mdiff --git a/maven/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst b/maven/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst[m
+[1mnew file mode 100644[m
+[1mindex 0000000..63e4b58[m
+[1m--- /dev/null[m
+[1m+++ b/maven/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst[m
+[36m@@ -0,0 +1,2 @@[m
+[32m+[m[32mC:\Users\CM\IdeaProjects\maven\src\main\java\resizeimage\ResizeImage.java[m
+[32m+[m[32mC:\Users\CM\IdeaProjects\maven\src\main\java\mainpack\Main.java[m
+[1mdiff --git a/maven/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst b/maven/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e69de29[m
