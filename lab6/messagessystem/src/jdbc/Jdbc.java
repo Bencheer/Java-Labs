@@ -314,8 +314,12 @@ public class Jdbc {
      * Топ первых 10 пользователей.
      * @return
      */
-    public String[] getTopTenUsers() {
-        String[] top = new String[10];
+    public ArrayList<String[]> getTopTenUsers() {
+        ArrayList<String[]> top = new ArrayList<String[]>();
+        String[] fam = new String[10];
+        String[] name = new String[10];
+        String[] login = new String[10];
+        String[] time = new String[10];
 
         try {
             Statement snmt = this.con.createStatement();
@@ -324,9 +328,19 @@ public class Jdbc {
 
             int i = 0;
             while (querySet.next()) {
-                top[i] = querySet.getString("fam") + " -- " + querySet.getString("name") + " -- " + querySet.getString("login") + " -- " + querySet.getTime("time");
-                i++;
+                if (querySet.getString("fam") != null) {
+                    fam[i] = querySet.getString("fam");
+                    name[i] = querySet.getString("name");
+                    login[i] = querySet.getString("login");
+                    time[i] = querySet.getTimestamp("time").toString();
+                    i++;
+                }
+                //top[i] = querySet.getString("fam") + " -- " + querySet.getString("name") + " -- " + querySet.getString("login") + " -- " + querySet.getTime("time");
             }
+            top.add(fam);
+            top.add(name);
+            top.add(login);
+            top.add(time);
 
             return top;
         } catch (SQLException e) {

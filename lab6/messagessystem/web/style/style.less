@@ -109,6 +109,17 @@ body {
               background: #c7daf7;
               cursor: default;
             }
+            &:first-child {
+              &:hover {
+                background: none;
+              }
+            }
+            &:last-child {
+              &:hover {
+                background: #eee;
+                cursor: pointer;
+              }
+            }
           }
         }
       }
@@ -146,6 +157,36 @@ body {
       .content {
         .cont-messages, .cont-users, .cont-top-ten-up, .cont-top-ten-down {
           display: none;
+        }
+
+        .cont-top-ten-up {
+          box-sizing: border-box;
+          width: 100%;
+          table {
+            box-sizing: border-box;
+            width: 100%;
+            tr {
+              box-sizing: border-box;
+              width: 100%;
+              border-bottom: 1px solid #007cee;
+              &:nth-child(odd) {
+                background: #b6dcee;
+              }
+              &:first-child {
+                background: #eee;
+              }
+              td {
+                box-sizing: border-box;
+                width: 25%;
+                text-align: center;
+                padding: 5px;
+
+                &:hover {
+                  cursor: default;
+                }
+              }
+            }
+          }
         }
       }
     }

@@ -19,14 +19,20 @@ import java.util.*;
  * Created by CM on 02.11.2014.
  */
 public class TopTenUsers extends HttpServlet {
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (CheckSession.isSetSesion(req.getCookies())) {
             Jdbc getDate = new Jdbc();
-            String[] listUser = getDate.getTopTenUsers();
+            ArrayList<String[]> listUser = getDate.getTopTenUsers();
 
             Map m1 = new LinkedHashMap();
-            Map m2 = new HashMap();
+
+            Map fam = new LinkedHashMap();
+            Map name = new LinkedHashMap();
+            Map login = new LinkedHashMap();
+            Map time = new LinkedHashMap();
+
             List l1 = new LinkedList();
 
             m1.put("success","1");
@@ -34,16 +40,32 @@ public class TopTenUsers extends HttpServlet {
             JSONArray arrToret = new JSONArray();
             arrToret.add(1);
 
-            String jsonData = "";
-            for (int i = 0; i < listUser.length; i++) {
-                if (listUser[i] != null) {
-                    jsonData += listUser[i] + "<br>";
+            for (int i = 0; i < listUser.size(); i++) {
+                for (int j = 0; j < listUser.get(i).length; j++) {
+                    if (listUser.get(i)[j] != null) {
+                        if (i == 0) {
+                            fam.put(j, listUser.get(i)[j]);
+                        }
+                        if (i == 1) {
+                            name.put(j, listUser.get(i)[j]);
+                        }
+                        if (i == 2) {
+                            login.put(j, listUser.get(i)[j]);
+                        }
+                        if (i == 3) {
+                            time.put(j, listUser.get(i)[j]);
+                        }
+                    } else {
+                        break;
+                    }
                 }
             }
 
-            m2.put("topUp", jsonData);
             l1.add(m1);
-            l1.add(m2);
+            l1.add(fam);
+            l1.add(name);
+            l1.add(login);
+            l1.add(time);
             String jsonString = JSONValue.toJSONString(l1);
 
             resp.setContentType("application/json");

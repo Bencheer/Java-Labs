@@ -17,6 +17,9 @@
             <div class="user">
                 <ul>
                     <li>
+                        Мой профиль
+                    </li>
+                    <li>
                         <table>
                             <tr>
                                 <td>ID:</td>
@@ -90,7 +93,9 @@
                     Список пользователей
                 </div>
                 <div id="cont-top-ten-up" class="cont-top-ten-up">
-                    Топ 10 первых пользователей
+                    <table>
+
+                    </table>
                 </div>
                 <div id="cont-top-ten-down" class="cont-top-ten-down">
                     Топ 10 последних пользователей
@@ -128,8 +133,26 @@
                         dataType: "json",
                         success: function(data) {
                             if (data[0].success == 1) {
-                                for (var i = 1; i < data.length; i++) {
-                                    $(document).find('#cont-top-ten-up').html(data[i].topUp);
+                                var allData = [];
+                                var lineData = [];
+                                for (var j = 0; j < 10; j++) {
+                                    if (typeof data[1][j] !== "undefined") {
+                                        lineData.push(data[1][j]);
+                                        lineData.push(data[2][j]);
+                                        lineData.push(data[3][j]);
+                                        lineData.push(data[4][j]);
+
+                                        allData.push(lineData);
+                                        lineData = [];
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                var tr = "<tr><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
+                                $(document).find('#cont-top-ten-up table').append(tr);
+                                for (var i = 0; i < allData.length; i++) {
+                                    tr = "<tr><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
+                                    $(document).find('#cont-top-ten-up table').append(tr);
                                 }
                             } else {
                                 alert(0);
