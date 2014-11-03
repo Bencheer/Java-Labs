@@ -2,6 +2,7 @@
 <%@ page import="jdbc.Jdbc" %>
 <%@ page import="getdata.GetUsersInfo" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="getdata.CountUsers" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -60,16 +61,16 @@
                         </table>
                     </li>
                     <hr/>
-                    <%--<li>--%>
-                        <%--<table>--%>
-                            <%--<tr>--%>
-                                <%--<td>Всего пользователей:</td>--%>
-                                <%--<td>--%>
-
-                                <%--</td>--%>
-                            <%--</tr>--%>
-                        <%--</table>--%>
-                    <%--</li>--%>
+                    <li>
+                        <table>
+                            <tr>
+                                <td>Всего пользователей:</td>
+                                <td>
+                                    <%=CountUsers.getCountUsers(request.getCookies())%>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
                     <hr/>
                     <li class="exit">Выход</li>
                 </ul>
@@ -87,10 +88,24 @@
             </nav>
             <div class="content">
                 <div id="cont-messages" class="cont-messages">
-                    Сообщения пользователей
+                    <div class="write-message">
+                        <textarea name="" id="" placeholder="Введите ваше сообщение"></textarea>
+                        <div class="send">Отправить</div>
+                    </div>
+                    <div class="all-messages">
+                        <div class="message" id="-1">
+                            <div class="author" id="">test</div>
+                            <div class="text">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus architecto aspernatur consequuntur debitis eveniet minima nulla reprehenderit voluptatum. Autem debitis dicta excepturi expedita harum illum quibusdam sequi sit velit vitae?
+                            </div>
+                            <div class="time">2014-11-03 18:41:52.0</div>
+                        </div>
+                    </div>
                 </div>
                 <div id="cont-users" class="cont-users">
-                    Список пользователей
+                    <table>
+
+                    </table>
                 </div>
                 <div id="cont-top-ten-up" class="cont-top-ten-up">
                     <table>
@@ -98,7 +113,9 @@
                     </table>
                 </div>
                 <div id="cont-top-ten-down" class="cont-top-ten-down">
-                    Топ 10 последних пользователей
+                    <table>
+
+                    </table>
                 </div>
             </div>
         </div>
@@ -115,18 +132,49 @@
                 $('#' + lastId).toggle();
             }
             switch (nowId) {
-                case 'show-users':
+                case 'show-messages':
                     lastId = 'cont-messages';
+                    updateMess();
                     $('#' + lastId).toggle(100);
                     break;
 
-                case 'show-messages':
+                case 'show-users':
                     lastId = 'cont-users';
+                    $(document).find('#cont-users table').html('');
+                    $.ajax({
+                        type: "POST",
+                        url: "/getusers",
+                        dataType: "json",
+                        success: function(data) {
+                            if (data[0].success == 1) {
+                                var allData = [];
+                                var lineData = [];
+                                for (var j = 0; j < <%=CountUsers.getCountUsers(request.getCookies())%>; j++) {
+                                        lineData.push(data[1][j]);
+                                        lineData.push(data[2][j]);
+                                        lineData.push(data[3][j]);
+                                        lineData.push(data[4][j]);
+
+                                        allData.push(lineData);
+                                        lineData = [];
+                                }
+                                var tr = "<tr><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
+                                $(document).find('#cont-users table').append(tr);
+                                for (var i = 0; i < allData.length; i++) {
+                                    tr = "<tr><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
+                                    $(document).find('#cont-users table').append(tr);
+                                }
+                            } else {
+                                alert(0);
+                            }
+                        }
+                    });
                     $('#' + lastId).toggle(100);
                     break;
 
                 case 'show-first-top-ten':
                     lastId = 'cont-top-ten-up';
+                    $(document).find('#cont-top-ten-up table').html('');
                     $.ajax({
                         type: "POST",
                         url: "/topten",
@@ -164,6 +212,39 @@
 
                 case 'show-last-top-ten':
                     lastId = 'cont-top-ten-down';
+                    $(document).find('#cont-top-ten-down table').html('');
+                    $.ajax({
+                        type: "POST",
+                        url: "/toptendown",
+                        dataType: "json",
+                        success: function(data) {
+                            if (data[0].success == 1) {
+                                var allData = [];
+                                var lineData = [];
+                                for (var j = 0; j < 10; j++) {
+                                    if (typeof data[1][j] !== "undefined") {
+                                        lineData.push(data[1][j]);
+                                        lineData.push(data[2][j]);
+                                        lineData.push(data[3][j]);
+                                        lineData.push(data[4][j]);
+
+                                        allData.push(lineData);
+                                        lineData = [];
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                var tr = "<tr><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
+                                $(document).find('#cont-top-ten-down table').append(tr);
+                                for (var i = 0; i < allData.length; i++) {
+                                    tr = "<tr><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
+                                    $(document).find('#cont-top-ten-down table').append(tr);
+                                }
+                            } else {
+                                $(document).find('#cont-top-ten-down').html('Топ последних 10 пользователей пуст!');
+                            }
+                        }
+                    });
                     $('#' + lastId).toggle(100);
                     break;
             }
@@ -182,6 +263,73 @@
                     }
                 }
             });
+        });
+
+        $('textarea').keyup(function(){
+            $(this).height(16);
+            $(this).height(this.scrollHeight).fadeIn(400);
+        });
+
+        $('textarea').on('focus', function() {
+            $('.send').show();
+        });
+
+
+        $('.send').on('click', function(event) {
+            var textVal = $('textarea').val();
+            if (textVal != '') {
+                $.ajax({
+                    type: "POST",
+                    data: {text: textVal},
+                    url: "/sendmessage",
+                    dataType: "json",
+                    success: function (data) {
+                        updateMess();
+                    }
+                });
+            } else {
+                alert('Вы не ввели сообщение!');
+            }
+        });
+
+        function updateMess() {
+            var lastId = -1;
+//            if ($(document).find('.message') != undefined) {
+//                var max = +$(document).find('.message').eq(0).attr('id');
+//                for (var i = 0; i < $(document).find('.message').length; i++) {
+//                    if (+$(document).find('.message').eq(i).attr('id') > max) {
+//                        max = +$(document).find('.message').eq(i).attr('id');
+//                    }
+//                }
+//                lastId = max;
+//            }
+            $.ajax({
+                type: "POST",
+                data: {lastId: lastId},
+                url: "/getmessages",
+                dataType: "json",
+                success: function (data) {
+                    if (data[data.length - 1].success === 1) {
+                        $(document).find('.all-messages').html('');
+                        for (var i = 0; i < data.length - 2; i++) {
+                            $(document).find('.all-messages').append('<div class="message" id="' + data[i].mid +'"> \
+                                                                        <div class="author" id="' + data[i].iduser +'">' + data[i].name + " " + data[i].fam +'</div> \
+                                                                        <div class="text"> \
+                                                                             ' + data[i].text +'    \
+                                                                        </div> \
+                                                                        <div class="time">' + data[i].time +'</div> \
+                                                                    </div>');
+                        }
+                    }
+                }
+            });
+        }
+
+        $(document).click(function(e){
+            if ($(e.target).parents().filter('.write-message').length != 1) {
+                $('.send').hide();
+                $('textarea').height(16);
+            }
         });
     </script>
 <%} else {%>

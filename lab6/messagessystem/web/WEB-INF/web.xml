@@ -16,6 +16,22 @@
         <servlet-name>topten</servlet-name>
         <servlet-class>getdata.TopTenUsers</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>lastopten</servlet-name>
+        <servlet-class>getdata.GetTopTenDown</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getusers</servlet-name>
+        <servlet-class>getdata.GetAllUsers</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>sendmess</servlet-name>
+        <servlet-class>getdata.SendMessage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getmessages</servlet-name>
+        <servlet-class>getdata.GetMessages</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>auth</servlet-name>
@@ -30,5 +46,22 @@
     <servlet-mapping>
         <servlet-name>topten</servlet-name>
         <url-pattern>/topten</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>lastopten</servlet-name>
+        <url-pattern>/toptendown</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getusers</servlet-name>
+        <url-pattern>/getusers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sendmess</servlet-name>
+        <url-pattern>/sendmessage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getmessages</servlet-name>
+        <url-pattern>/getmessages</url-pattern>
     </servlet-mapping>
 </web-app>

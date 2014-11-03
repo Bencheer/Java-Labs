@@ -188,7 +188,7 @@ public class Jdbc {
 
     public boolean loginInProjec(String login, String password, String secretKey) {
         try {
-            Statement stmt = this.con.createStatement();
+            Statement stmt = con.createStatement();
 
             String sql = "SELECT * FROM users WHERE login = '" + login + "' AND password = '" + password + "'";
 
@@ -208,7 +208,7 @@ public class Jdbc {
                 family_ = querySet.getString("fam");
             }
 
-            if (login_.equals(getLogin()) && password_.equals(getPassword())) {
+            if (login_.equals(login) && password_.equals(password)) {
                 setUserData(login_, password_, id_, family_, name_);
 
                 stmt = con.createStatement();
@@ -296,7 +296,7 @@ public class Jdbc {
         Integer count = 0;
 
         try {
-            Statement snmt = this.con.createStatement();
+            Statement snmt = con.createStatement();
             String query = "SELECT COUNT(id) as count FROM users";
             ResultSet querySet = snmt.executeQuery(query);
 
@@ -306,7 +306,7 @@ public class Jdbc {
 
             return count;
         } catch (SQLException e) {
-            return -10;
+            return null;
         }
     }
 
@@ -335,7 +335,6 @@ public class Jdbc {
                     time[i] = querySet.getTimestamp("time").toString();
                     i++;
                 }
-                //top[i] = querySet.getString("fam") + " -- " + querySet.getString("name") + " -- " + querySet.getString("login") + " -- " + querySet.getTime("time");
             }
             top.add(fam);
             top.add(name);
@@ -353,8 +352,13 @@ public class Jdbc {
      * Если этот топ, совпадает с топом 1-х 10, то он не выводится.
      * @return
      */
-    public String[] getLastTopTenUsers() {
-        String[] lastTop = new String[10];
+    public ArrayList<String[]> getLastTopTenUsers() {
+        ArrayList<String[]> lastTop = new ArrayList<String[]>();
+        String[] fam = new String[10];
+        String[] name = new String[10];
+        String[] login = new String[10];
+        String[] time = new String[10];
+
         Integer[] topId = new Integer[10];
         Integer count = 0;
         try {
@@ -387,13 +391,23 @@ public class Jdbc {
             }
 
             query = "SELECT id, fam, name, login, time FROM users WHERE id NOT IN (" + tmpStr + ") ORDER BY time ASC LIMIT 10";
+            System.out.println(query);
             querySet =  snmt.executeQuery(query);
             count = getCountsUsers();
             int i = 0;
             while (querySet.next()) {
-                lastTop[i] = querySet.getString("fam") + " -- " + querySet.getString("name") + " -- " + querySet.getString("login") + " -- " + querySet.getTime("time");
-                i++;
+                if (querySet.getString("fam") != null) {
+                    fam[i] = querySet.getString("fam");
+                    name[i] = querySet.getString("name");
+                    login[i] = querySet.getString("login");
+                    time[i] = querySet.getTimestamp("time").toString();
+                    i++;
+                }
             }
+            lastTop.add(fam);
+            lastTop.add(name);
+            lastTop.add(login);
+            lastTop.add(time);
 
             return lastTop;
         } catch (SQLException e) {
@@ -446,26 +460,86 @@ public class Jdbc {
         }
     }
 
+    public void addNewMessage(String text, int id) {
+        try {
+            Statement snmt = this.con.createStatement();
+            String query = "INSERT INTO messages (id, id_user, text_mess, time) VALUES(NULL," + id + ", '" + text + "', NULL)";
+            snmt.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println("Не удалось вставить данные!");
+        }
+    }
+
     /**
      * Получить список всех сообщений.
      * @return
      */
-    public ArrayList getAllMessages() {
-        ArrayList<String> messages = new ArrayList<String>();
+    public ArrayList<ArrayList<String>> getAllMessages(Integer id) {
+        ArrayList<ArrayList<String>> messages = new ArrayList<ArrayList<String>>();
+        ArrayList<String> name = new ArrayList<String>();
+        ArrayList<String> fam = new ArrayList<String>();
+        ArrayList<String> mid = new ArrayList<String>();
+        ArrayList<String> iduser = new ArrayList<String>();
+        ArrayList<String> text = new ArrayList<String>();
+        ArrayList<String> time = new ArrayList<String>();
+
 
         try {
-            Statement snmt = this.con.createStatement();
-            String query = "SELECT u.name, m.id, m.id_user, m.text_mess, m.time FROM users as u, messages as m WHERE u.id = m.id_user";
+            Statement snmt = con.createStatement();
+            String query = "SELECT u.name, u.fam, m.id, m.id_user, m.text_mess, m.time FROM users as u, messages as m WHERE u.id = m.id_user AND m.id > " + id + " ORDER BY m.time DESC";
             snmt.executeQuery(query);
             ResultSet querySet =  snmt.executeQuery(query);
 
             while (querySet.next()) {
-                messages.add(querySet.getString("name") + " -- " + querySet.getString("text_mess") + " -- " + querySet.getTime("time") + "\n");
+                name.add(querySet.getString("name"));
+                fam.add(querySet.getString("fam"));
+                mid.add(String.valueOf(querySet.getInt("id")));
+                iduser.add(String.valueOf(querySet.getInt("id_user")));
+                text.add(querySet.getString("text_mess"));
+                time.add(String.valueOf(querySet.getTimestamp("time")));
             }
         } catch (Exception e) {
             return null;
         }
 
+        messages.add(name);
+        messages.add(fam);
+        messages.add(mid);
+        messages.add(iduser);
+        messages.add(text);
+        messages.add(time);
+
         return messages;
+    }
+
+    public ArrayList<String[]> getAllUsers() {
+        ArrayList<String[]> top = new ArrayList<String[]>();
+        String[] fam = new String[10];
+        String[] name = new String[10];
+        String[] login = new String[10];
+        String[] time = new String[10];
+
+        try {
+            Statement snmt = con.createStatement();
+            String query = "SELECT fam, name, login, time FROM users";
+            ResultSet querySet =  snmt.executeQuery(query);
+
+            int i = 0;
+            while (querySet.next()) {
+                fam[i] = querySet.getString("fam");
+                name[i] = querySet.getString("name");
+                login[i] = querySet.getString("login");
+                time[i] = querySet.getTimestamp("time").toString();
+                i++;
+            }
+            top.add(fam);
+            top.add(name);
+            top.add(login);
+            top.add(time);
+
+            return top;
+        } catch (SQLException e) {
+            return null;
+        }
     }
 }

@@ -2,9 +2,7 @@ package getdata;
 
 import checksession.CheckSession;
 import jdbc.Jdbc;
-
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import javax.servlet.ServletException;
@@ -16,15 +14,14 @@ import java.io.PrintWriter;
 import java.util.*;
 
 /**
- * Created by CM on 02.11.2014.
+ * Created by CM on 03.11.2014.
  */
-public class TopTenUsers extends HttpServlet {
-
+public class GetAllUsers extends HttpServlet{
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (CheckSession.isSetSesion(req.getCookies())) {
             Jdbc getDate = new Jdbc();
-            ArrayList<String[]> listUser = getDate.getTopTenUsers();
+            ArrayList<String[]> listUser = getDate.getAllUsers();
 
             Map m1 = new LinkedHashMap();
 

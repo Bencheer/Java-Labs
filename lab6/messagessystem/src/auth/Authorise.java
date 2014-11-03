@@ -19,7 +19,7 @@ public class Authorise extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        Jdbc user = new Jdbc(login, password);
+        Jdbc user = new Jdbc();
         if (user.loginInProjec(login, password, req.getRequestedSessionId())) {
             Cookie coockie = new Cookie("uid", req.getRequestedSessionId().substring(0, 29));
             coockie.setMaxAge(7 * 24 * 60 * 60);
