@@ -27,6 +27,11 @@ public class CheckSession {
         }
 
         if (userId == null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             return false;
         } else {
             try {
@@ -42,11 +47,13 @@ public class CheckSession {
                 if (countR.equals(1)) {
                     query = "UPDATE users_online SET time = NULL WHERE secretKey = '" + userId.substring(0, 29) + "'";
                     snmt.executeUpdate(query);
+                    conn.close();
                     return true;
                 } else {
                     System.out.println("SESSION " + userId);
                     query = "DELETE FROM users_online WHERE secretKey = '" + userId.substring(0, 29) + "'";
                     snmt.executeUpdate(query);
+                    conn.close();
                     return false;
                 }
             } catch (SQLException e) {

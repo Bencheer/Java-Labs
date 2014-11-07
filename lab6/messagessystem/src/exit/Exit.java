@@ -57,6 +57,7 @@ public class Exit extends HttpServlet {
                     }
                 }
 
+                conn.close();
                 resp.setContentType("application/json");
                 PrintWriter out = resp.getWriter();
                 out.print("{\"success\" : 1}");

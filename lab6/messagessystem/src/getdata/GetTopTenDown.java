@@ -22,7 +22,7 @@ public class GetTopTenDown extends HttpServlet {
         if (CheckSession.isSetSesion(req.getCookies())) {
             Jdbc getDate = new Jdbc();
             ArrayList<String[]> listUser = getDate.getLastTopTenUsers();
-            if (listUser.get(0)[0] == null) {
+            if (listUser == null) {
                 System.out.println(1111111);
                 Map m1 = new LinkedHashMap();
                 List l1 = new LinkedList();

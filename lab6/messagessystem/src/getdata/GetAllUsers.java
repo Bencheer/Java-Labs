@@ -21,8 +21,21 @@ public class GetAllUsers extends HttpServlet{
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (CheckSession.isSetSesion(req.getCookies())) {
             Jdbc getDate = new Jdbc();
-            ArrayList<String[]> listUser = getDate.getAllUsers();
+            ArrayList<ArrayList<String>> listUser = getDate.getAllUsers();
 
+            if (listUser == null) {
+                Map m1 = new LinkedHashMap();
+                List l1 = new LinkedList();
+
+                m1.put("success","0");
+                l1.add(m1);
+                String jsonString = JSONValue.toJSONString(l1);
+
+                resp.setContentType("application/json");
+                PrintWriter out = resp.getWriter();
+                out.print(jsonString);
+                out.flush();
+            }
             Map m1 = new LinkedHashMap();
 
             Map fam = new LinkedHashMap();
@@ -38,19 +51,19 @@ public class GetAllUsers extends HttpServlet{
             arrToret.add(1);
 
             for (int i = 0; i < listUser.size(); i++) {
-                for (int j = 0; j < listUser.get(i).length; j++) {
-                    if (listUser.get(i)[j] != null) {
+                for (int j = 0; j < listUser.get(i).size(); j++) {
+                    if (listUser.get(i).get(j) != null) {
                         if (i == 0) {
-                            fam.put(j, listUser.get(i)[j]);
+                            fam.put(j, listUser.get(i).get(j));
                         }
                         if (i == 1) {
-                            name.put(j, listUser.get(i)[j]);
+                            name.put(j, listUser.get(i).get(j));
                         }
                         if (i == 2) {
-                            login.put(j, listUser.get(i)[j]);
+                            login.put(j, listUser.get(i).get(j));
                         }
                         if (i == 3) {
-                            time.put(j, listUser.get(i)[j]);
+                            time.put(j, listUser.get(i).get(j));
                         }
                     } else {
                         break;

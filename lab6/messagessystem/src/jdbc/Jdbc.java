@@ -175,10 +175,11 @@ public class Jdbc {
                 String query = "UPDATE users SET time = NULL WHERE id = '" + getId() + "'";
                 stmt.executeUpdate(query);
 
+                con.close();
                 return true;
             } else {
                 setNullUserData();
-
+                con.close();
                 return false;
             }
         } catch (SQLException e) {
@@ -218,11 +219,11 @@ public class Jdbc {
                 query = "INSERT INTO users_online VALUES(NULL, " + this.id + ", '" + secretKey.substring(0, 29) + "', NULL)";
                 System.out.println(query);
                 stmt.executeUpdate(query);
-
+                con.close();
                 return true;
             } else {
                 setNullUserData();
-
+                con.close();
                 return false;
             }
         } catch (SQLException e) {
@@ -250,8 +251,10 @@ public class Jdbc {
             }
 
             if (id_.equals(-10)) {
+                con.close();
                return false;
             } else {
+                con.close();
                 return true;
             }
         } catch (SQLException e) {
@@ -279,11 +282,12 @@ public class Jdbc {
             ResultSet id = statement.getGeneratedKeys();
             System.out.println(id.getInt(1));
             setUserData(login, password, id.getInt(1), family, name);
-
+            con.close();
             return true;
         } catch (Exception e) {
             setNullUserData();
             e.printStackTrace();
+            con.close();
             return false;
         }
     }
@@ -303,7 +307,7 @@ public class Jdbc {
             while (querySet.next()) {
                 count = querySet.getInt("count");
             }
-
+            con.close();
             return count;
         } catch (SQLException e) {
             return null;
@@ -322,7 +326,7 @@ public class Jdbc {
         String[] time = new String[10];
 
         try {
-            Statement snmt = this.con.createStatement();
+            Statement snmt = con.createStatement();
             String query = "SELECT fam, name, login, time FROM users ORDER BY time DESC LIMIT 10 ";
             ResultSet querySet =  snmt.executeQuery(query);
 
@@ -340,9 +344,10 @@ public class Jdbc {
             top.add(name);
             top.add(login);
             top.add(time);
-
+            con.close();
             return top;
         } catch (SQLException e) {
+
             return null;
         }
     }
@@ -371,7 +376,7 @@ public class Jdbc {
                 topId[j] = querySet.getInt("id");
                 j++;
             }
-
+            con.close();
             Integer tmpInString[] = new Integer[10];
             int ck = 0;
             for (int i = 0; i < topId.length; i++) {
@@ -391,8 +396,9 @@ public class Jdbc {
             }
 
             query = "SELECT id, fam, name, login, time FROM users WHERE id NOT IN (" + tmpStr + ") ORDER BY time ASC LIMIT 10";
-            System.out.println(query);
-            querySet =  snmt.executeQuery(query);
+            Connection con1 = connectToDb();
+            Statement snmt1 = con1.createStatement();
+            querySet =  snmt1.executeQuery(query);
             count = getCountsUsers();
             int i = 0;
             while (querySet.next()) {
@@ -404,13 +410,14 @@ public class Jdbc {
                     i++;
                 }
             }
+            con1.close();
             lastTop.add(fam);
             lastTop.add(name);
             lastTop.add(login);
             lastTop.add(time);
-
             return lastTop;
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -439,10 +446,10 @@ public class Jdbc {
             while (querySet.next()) {
                 messages.add(querySet.getString("text_mess") + " -- " + querySet.getTime("time") + "\n");
             }
+            con.close();
         } catch (Exception e) {
             return null;
         }
-
         return messages;
     }
 
@@ -455,6 +462,7 @@ public class Jdbc {
             Statement snmt = this.con.createStatement();
             String query = "INSERT INTO messages (id, id_user, text_mess, time) VALUES(NULL," + getId() + ", '" + text + "', NULL)";
             snmt.executeUpdate(query);
+            con.close();
         } catch (Exception e) {
             System.out.println("Не удалось вставить данные!");
         }
@@ -465,6 +473,7 @@ public class Jdbc {
             Statement snmt = this.con.createStatement();
             String query = "INSERT INTO messages (id, id_user, text_mess, time) VALUES(NULL," + id + ", '" + text + "', NULL)";
             snmt.executeUpdate(query);
+            con.close();
         } catch (Exception e) {
             System.out.println("Не удалось вставить данные!");
         }
@@ -498,6 +507,7 @@ public class Jdbc {
                 text.add(querySet.getString("text_mess"));
                 time.add(String.valueOf(querySet.getTimestamp("time")));
             }
+            con.close();
         } catch (Exception e) {
             return null;
         }
@@ -512,12 +522,12 @@ public class Jdbc {
         return messages;
     }
 
-    public ArrayList<String[]> getAllUsers() {
-        ArrayList<String[]> top = new ArrayList<String[]>();
-        String[] fam = new String[10];
-        String[] name = new String[10];
-        String[] login = new String[10];
-        String[] time = new String[10];
+    public ArrayList<ArrayList<String>> getAllUsers() {
+        ArrayList<ArrayList<String>> top = new ArrayList<ArrayList<String>>();
+        ArrayList<String> fam = new ArrayList<String>();
+        ArrayList<String> name = new ArrayList<String>();
+        ArrayList<String> login = new ArrayList<String>();
+        ArrayList<String> time = new ArrayList<String>();
 
         try {
             Statement snmt = con.createStatement();
@@ -526,17 +536,17 @@ public class Jdbc {
 
             int i = 0;
             while (querySet.next()) {
-                fam[i] = querySet.getString("fam");
-                name[i] = querySet.getString("name");
-                login[i] = querySet.getString("login");
-                time[i] = querySet.getTimestamp("time").toString();
+                fam.add(querySet.getString("fam"));
+                name.add(querySet.getString("name"));
+                login.add(querySet.getString("login"));
+                time.add(querySet.getTimestamp("time").toString());
                 i++;
             }
             top.add(fam);
             top.add(name);
             top.add(login);
             top.add(time);
-
+            con.close();
             return top;
         } catch (SQLException e) {
             return null;
