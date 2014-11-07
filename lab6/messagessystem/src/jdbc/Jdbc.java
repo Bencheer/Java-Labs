@@ -24,14 +24,6 @@ public class Jdbc {
         this.password = password;
 
         this.con = connectToDb();
-//        if (con != null) {
-//            boolean lg = loginInProjec(login, password);
-//            if (lg) {
-//                System.out.println("Пользователь - " + getLogin() + " авторизован!");
-//            } else {
-//                System.out.println("Неверный логин или пароль, или нет соединения с БД! :(");
-//            }
-//        }
     }
 
     /**
@@ -429,45 +421,6 @@ public class Jdbc {
         setNullUserData();
     }
 
-    /**
-     * Получение списка сообщений пользователя.
-     * @param id
-     * @return
-     */
-    public ArrayList getMessages(Integer id) {
-        ArrayList<String> messages = new ArrayList<String>();
-
-        try {
-            Statement snmt = this.con.createStatement();
-            String query = "SELECT id, id_user, text_mess, time FROM messages WHERE id_user = " + id;
-            snmt.executeQuery(query);
-            ResultSet querySet =  snmt.executeQuery(query);
-
-            while (querySet.next()) {
-                messages.add(querySet.getString("text_mess") + " -- " + querySet.getTime("time") + "\n");
-            }
-            con.close();
-        } catch (Exception e) {
-            return null;
-        }
-        return messages;
-    }
-
-    /**
-     * Добавление нового сообщения.
-     * @param text
-     */
-    public void addNewMessage(String text) {
-        try {
-            Statement snmt = this.con.createStatement();
-            String query = "INSERT INTO messages (id, id_user, text_mess, time) VALUES(NULL," + getId() + ", '" + text + "', NULL)";
-            snmt.executeUpdate(query);
-            con.close();
-        } catch (Exception e) {
-            System.out.println("Не удалось вставить данные!");
-        }
-    }
-
     public void addNewMessage(String text, int id) {
         try {
             Statement snmt = this.con.createStatement();
@@ -495,7 +448,7 @@ public class Jdbc {
 
         try {
             Statement snmt = con.createStatement();
-            String query = "SELECT u.name, u.fam, m.id, m.id_user, m.text_mess, m.time FROM users as u, messages as m WHERE u.id = m.id_user AND m.id > " + id + " ORDER BY m.time DESC";
+            String query = "SELECT u.name, u.fam, m.id, m.id_user, m.text_mess, m.time FROM users as u, messages as m WHERE u.id = m.id_user AND m.id > " + id + " ORDER BY m.time DESC LIMIT 20";
             snmt.executeQuery(query);
             ResultSet querySet =  snmt.executeQuery(query);
 
