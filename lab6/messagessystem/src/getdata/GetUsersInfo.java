@@ -1,7 +1,6 @@
 package getdata;
 
 import checksession.CheckSession;
-import jdbc.ConntecToDb;
 import org.json.simple.JSONArray;
 
 import javax.servlet.http.Cookie;
@@ -21,7 +20,12 @@ public class GetUsersInfo extends HttpServlet{
     public static ArrayList<String> getInfo(Cookie[] coockie) {
         Connection conn = null;
         if (CheckSession.isSetSesion(coockie)) {
-            conn = new ConntecToDb().createConnection();
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/jdbc", "root", "");
+            } catch (Exception e) {
+                System.out.println("SQLException: " + e.getMessage());
+            }
 
             String userId = null;
             if (coockie != null) {
