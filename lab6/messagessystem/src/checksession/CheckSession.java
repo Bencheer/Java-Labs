@@ -1,5 +1,7 @@
 package checksession;
 
+import jdbc.ConntecToDb;
+
 import javax.servlet.http.Cookie;
 import java.sql.*;
 
@@ -8,14 +10,7 @@ import java.sql.*;
  */
 public class CheckSession {
     public static boolean isSetSesion(Cookie[] coockie) {
-        Connection conn;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost/jdbc", "root", "");
-        } catch (Exception e) {
-            System.out.println("SQLException: " + e.getMessage());
-            return false;
-        }
+        Connection conn = new ConntecToDb().createConnection();
 
         String userId = null;
         if (coockie != null) {

@@ -17,6 +17,9 @@ import java.util.*;
  * Created by CM on 03.11.2014.
  */
 public class GetAllUsers extends HttpServlet{
+
+
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (CheckSession.isSetSesion(req.getCookies())) {
