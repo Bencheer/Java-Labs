@@ -158,10 +158,10 @@
                                         allData.push(lineData);
                                         lineData = [];
                                 }
-                                var tr = "<tr><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
+                                var tr = "<tr><td>№</td><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
                                 $(document).find('#cont-users table').append(tr);
                                 for (var i = 0; i < allData.length; i++) {
-                                    tr = "<tr><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
+                                    tr = "<tr><td>" + (i+1) + "</td><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
                                     $(document).find('#cont-users table').append(tr);
                                 }
                             } else {
@@ -196,10 +196,10 @@
                                         break;
                                     }
                                 }
-                                var tr = "<tr><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
+                                var tr = "<tr><td>№</td><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
                                 $(document).find('#cont-top-ten-up table').append(tr);
                                 for (var i = 0; i < allData.length; i++) {
-                                    tr = "<tr><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
+                                    tr = "<tr><td>" + (i+1) + "</td><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
                                     $(document).find('#cont-top-ten-up table').append(tr);
                                 }
                             } else {
@@ -234,10 +234,10 @@
                                         break;
                                     }
                                 }
-                                var tr = "<tr><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
+                                var tr = "<tr><td>№</td><td>Фамилия</td><td>Имя</td><td>Логин</td><td>Время последнего входа</td></tr>";
                                 $(document).find('#cont-top-ten-down table').append(tr);
                                 for (var i = 0; i < allData.length; i++) {
-                                    tr = "<tr><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
+                                    tr = "<tr><td>" + (i+1) + "</td><td>" + allData[i][0] + "</td><td>" + allData[i][1] + "</td><td>" + allData[i][2] + "</td><td>" + allData[i][3] + "</td></tr>";
                                     $(document).find('#cont-top-ten-down table').append(tr);
                                 }
                             } else {
@@ -284,6 +284,7 @@
                     url: "/sendmessage",
                     dataType: "json",
                     success: function (data) {
+                        $('textarea').val('');
                         updateMess();
                     }
                 });

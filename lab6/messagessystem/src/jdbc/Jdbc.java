@@ -3,6 +3,8 @@ package jdbc;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static jdbc.HTMLEntities.htmlentities;
+
 /**
  * Created by CM on 25.10.2014.
  */
@@ -142,7 +144,7 @@ public class Jdbc {
         try {
             Statement stmt = this.con.createStatement();
 
-            String sql = "SELECT * FROM users WHERE login = '" + login + "' AND password = '" + password + "'";
+            String sql = "SELECT * FROM users WHERE login = '" + htmlentities(login) + "' AND password = '" + htmlentities(password) + "'";
 
             ResultSet querySet = stmt.executeQuery(sql);
 
@@ -183,7 +185,7 @@ public class Jdbc {
         try {
             Statement stmt = con.createStatement();
 
-            String sql = "SELECT * FROM users WHERE login = '" + login + "' AND password = '" + password + "'";
+            String sql = "SELECT * FROM users WHERE login = '" + htmlentities(login) + "' AND password = '" + htmlentities(password) + "'";
 
             ResultSet querySet = stmt.executeQuery(sql);
 
@@ -232,7 +234,7 @@ public class Jdbc {
         try {
             Statement stmt = this.con.createStatement();
 
-            String sql = "SELECT id FROM users WHERE login = '" + login + "'";
+            String sql = "SELECT id FROM users WHERE login = '" + htmlentities(login) + "'";
 
             ResultSet querySet = stmt.executeQuery(sql);
 
@@ -268,7 +270,7 @@ public class Jdbc {
         try {
             Statement statement = this.con.createStatement();
 
-            String query = "INSERT INTO users(id, fam, name, login, password, time) VALUES(NULL, '" + family + "', '" + name + "', '" + login + "', '" + password + "'" + ", NULL" + ")";
+            String query = "INSERT INTO users(id, fam, name, login, password, time) VALUES(NULL, '" + htmlentities(family) + "', '" + htmlentities(name) + "', '" + htmlentities(login) + "', '" + htmlentities(password) + "'" + ", NULL" + ")";
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet id = statement.getGeneratedKeys();
@@ -387,7 +389,7 @@ public class Jdbc {
                 }
             }
 
-            query = "SELECT id, fam, name, login, time FROM users WHERE id NOT IN (" + tmpStr + ") ORDER BY time ASC LIMIT 10";
+            query = "SELECT id, fam, name, login, time FROM users WHERE id NOT IN (" + htmlentities(tmpStr) + ") ORDER BY time ASC LIMIT 10";
             Connection con1 = connectToDb();
             Statement snmt1 = con1.createStatement();
             querySet =  snmt1.executeQuery(query);
@@ -424,7 +426,7 @@ public class Jdbc {
     public void addNewMessage(String text, int id) {
         try {
             Statement snmt = this.con.createStatement();
-            String query = "INSERT INTO messages (id, id_user, text_mess, time) VALUES(NULL," + id + ", '" + text + "', NULL)";
+            String query = "INSERT INTO messages (id, id_user, text_mess, time) VALUES(NULL," + id + ", '" + htmlentities(text) + "', NULL)";
             snmt.executeUpdate(query);
             con.close();
         } catch (Exception e) {
